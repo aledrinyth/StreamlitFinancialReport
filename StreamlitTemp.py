@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import requests
 
 # --- UI Element Definitions ---
 
@@ -10,83 +11,81 @@ st.set_page_config(layout="wide")
 st.title("Financial Report Analyzer")
 
 uploaded_pdf = st.file_uploader("Upload annual report (PDF)", type="pdf")
-manual_ticker = st.text_input("Override Ticker (e.g., MSFT)")
+manual_ticker = st.text_input("Enter Ticker (e.g., MSFT)")
 run_btn = st.button("Analyze")
 
 # --- UI Logic from your code ---
 
 if run_btn:
-    # --- Input Validation ---
-    if uploaded_pdf is None and not manual_ticker.strip():
-        st.warning("Upload a PDF or provide an override ticker.")
-        st.stop()
-
-    # --- Ticker Extraction UI ---
-    ticker_candidate = None
-    if not ticker_candidate and uploaded_pdf is not None:
-         with st.spinner("Extracting ticker from PDF..."):
-            # Placeholder for ticker extraction logic
-            pass
-
-    if not ticker_candidate:
-        st.warning("Could not determine a ticker. Provide an override or use a clearer filename.")
-        st.stop()
-
 
     # --- Data Fetching UI ---
-    yf_ticker = "GOOG" # Placeholder
+    yf_ticker = manual_ticker
     with st.spinner(f"Fetching Yahoo Finance data for {yf_ticker}..."):
         # Placeholder for Yahoo Finance data fetching
         try:
             # Simulating success or failure
-            pass
+
+            url = "https://financescraper-jn98.onrender.com/scrape"
+
+            headers = {"Content-Type": "application/json"}
+
+            payload = {"ticker": yf_ticker}
+
+            response = requests.post(url, headers=headers, json=payload)
+
+            response.raise_for_status()
+
+            data = response.json()
+
+            # Create tabs for each financial statement
+            tab1, tab2, tab3 = st.tabs(["Income Statement", "Balance Sheet", "Cash Flow"])
+
+            with tab1:
+                st.subheader("Income Statement")
+                # Extract the relevant data
+                income_data = data.get("incomeStatement")
+                if income_data:
+                    # Convert the list of dictionaries to a pandas DataFrame
+                    df_income = pd.DataFrame(income_data)
+                    # Set the 'Breakdown' column as the index for better readability
+                    df_income = df_income.set_index("Breakdown")
+                    # Display the data in an interactive dataframe
+                    st.dataframe(df_income)
+                else:
+                    st.warning("Income Statement data not available.")
+
+            with tab2:
+                st.subheader("Balance Sheet")
+                balance_sheet_data = data.get("balanceSheet")
+                if balance_sheet_data:
+                    df_balance = pd.DataFrame(balance_sheet_data)
+                    df_balance = df_balance.set_index("Breakdown")
+                    st.dataframe(df_balance)
+                else:
+                    st.warning("Balance Sheet data not available.")
+
+            with tab3:
+                st.subheader("Cash Flow")
+                cash_flow_data = data.get("cashFlow")
+                if cash_flow_data:
+                    df_cash_flow = pd.DataFrame(cash_flow_data)
+                    df_cash_flow = df_cash_flow.set_index("Breakdown")
+                    st.dataframe(df_cash_flow)
+                else:
+                    st.warning("Cash Flow data not available.")
+
+
         except Exception as e:
             st.error(f"Yahoo Finance error: {e}")
 
 
-    with st.spinner("Filling missing fields from PDF (LLM)…"):
-        # Placeholder for PDF analysis
-        try:
-            # Simulating success or failure
-            pass
-        except Exception as e:
-            st.error(f"PDF model error: {e}")
-
-
-    # --- Diagnostics UI ---
-    with st.expander("Diagnostics: Yahoo vs PDF vs Chosen"):
-        # Creating a placeholder dataframe for UI demonstration
-        prov_data = {
-            'field': ['revenue', 'net_income', 'eps'],
-            'yahoo_value': [1000, 200, 1.5],
-            'pdf_value': [1000, 205, None],
-            'source': ['yahoo', 'pdf', 'yahoo'],
-            'chosen_value': [1000, 205, 1.5]
-        }
-        prov_df = pd.DataFrame(prov_data)
-        st.dataframe(prov_df, use_container_width=True)
-
-        # Simulating a check for missing data
-        missing = prov_df[prov_df["source"] == "missing"] # This will be empty in the demo
-        if not missing.empty:
-            st.warning(f"Still missing {len(missing)} fields (neither source had them).")
-
-
-# --- Final Report Rendering UI ---
-# This part of the code checks if a report exists in the session state
-# and decides whether to show the initial message or the report.
-
-# To simulate a successful run for the UI demo, we can create a dummy report object.
-# In the real app, this would be set inside the `if run_btn:` block.
-if run_btn:
-    st.session_state['report'] = {"metadata": {"ticker": "GOOG"}, "data": "..."}
 
 
 if 'report' not in st.session_state:
     st.info("Upload a PDF or enter an override ticker, then click **Analyze**.")
 else:
     # Placeholder for the actual render_report(report) function
-    st.header(f"Analysis for {st.session_state['report']['metadata']['ticker']}")
+    # st.header(f"Analysis for {st.session_state['report']['metadata']['ticker']}")
     st.success("Report generated successfully!")
     st.write("Report content would be displayed here.")
     st.balloons()
