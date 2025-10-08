@@ -25,7 +25,8 @@ if run_btn:
         try:
             # Simulating success or failure
 
-            url = "https://financescraper-jn98.onrender.com/scrape"
+            url = st.secrets["url"]
+            # url = "https://financescraper-jn98.onrender.com/scrape"
 
             headers = {"Content-Type": "application/json"}
 
