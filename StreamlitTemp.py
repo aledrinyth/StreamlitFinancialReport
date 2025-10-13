@@ -25,9 +25,25 @@ if run_btn:
         try:
             # Simulating success or failure
 
+            # Initialise all the parameters needed for the GPFS requests and the financial statement request
             url = st.secrets["url"]
-            # url = "https://financescraper-jn98.onrender.com/scrape"
 
+            SUPABASE_URL = st.secrets["SUPABASE_URL"]
+            SUPABASE_ANON_KEY = st.secrets["SUPABASE_ANON_KEY"]
+            FUNCTION_NAME = "Retrieve-latest-url-for-GPFS" 
+            invoke_url = f"{SUPABASE_URL}/functions/v1/{FUNCTION_NAME}"
+
+            GPFS_headers = {
+                "Authorization": f"Bearer {SUPABASE_ANON_KEY}",
+                "Content-Type": "application/json"
+            }
+
+            GPFS_payload = {
+                "ticker": {yf_ticker},
+                "limit": 1
+            }
+
+            # --- Make the call to retrieve the financial statement data --- 
             headers = {"Content-Type": "application/json"}
 
             payload = {"ticker": yf_ticker}
@@ -37,6 +53,18 @@ if run_btn:
             response.raise_for_status()
 
             data = response.json()
+
+            # --- Now retrieve the GPFS from our database ---
+            
+            GPFS_response = requests.post(invoke_url, headers=GPFS_headers, json=GPFS_payload, timeout=10)
+
+            # Raise an exception for bad status codes (4xx or 5xx)
+            GPFS_response.raise_for_status()
+        
+            # --- Process the Response ---
+            
+            # The response from the function is in JSON format
+            GPFS_data = response.json()
 
             # Create tabs for each financial statement
             tab1, tab2, tab3 = st.tabs(["Income Statement", "Balance Sheet", "Cash Flow"])
@@ -74,6 +102,9 @@ if run_btn:
                     st.dataframe(df_cash_flow)
                 else:
                     st.warning("Cash Flow data not available.")
+
+            # Give the GPFS at the very bottom
+            st.write("Link to the latest general purpose financial statements in our database: ", GPFS_data)
 
 
         except Exception as e:
