@@ -54,18 +54,6 @@ if run_btn:
 
             data = response.json()
 
-            # --- Now retrieve the GPFS from our database ---
-            
-            GPFS_response = requests.post(invoke_url, headers=GPFS_headers, json=GPFS_payload, timeout=10)
-
-            # Raise an exception for bad status codes (4xx or 5xx)
-            GPFS_response.raise_for_status()
-        
-            # --- Process the Response ---
-            
-            # The response from the function is in JSON format
-            GPFS_data = response.json()
-
             # Create tabs for each financial statement
             tab1, tab2, tab3 = st.tabs(["Income Statement", "Balance Sheet", "Cash Flow"])
 
@@ -103,8 +91,22 @@ if run_btn:
                 else:
                     st.warning("Cash Flow data not available.")
 
-            # Give the GPFS at the very bottom
-            st.write("Link to the latest general purpose financial statements in our database: ", GPFS_data)
+            # --- Now retrieve the GPFS from our database ---
+            try:
+                GPFS_response = requests.post(invoke_url, headers=GPFS_headers, json=GPFS_payload, timeout=10)
+    
+                # Raise an exception for bad status codes (4xx or 5xx)
+                GPFS_response.raise_for_status()
+            
+                # --- Process the Response ---
+                
+                # The response from the function is in JSON format
+                GPFS_data = GPFS_response.json()
+    
+                # Give the GPFS at the very bottom
+                st.write("Link to the latest general purpose financial statements in our database: ", GPFS_data)
+            except Exception as f:
+                st.error(f"GPFS retrieval error {f}")
 
 
         except Exception as e:
