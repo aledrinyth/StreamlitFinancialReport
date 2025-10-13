@@ -39,7 +39,7 @@ if run_btn:
             }
 
             GPFS_payload = {
-                "ticker": {yf_ticker},
+                "ticker": yf_ticker,
                 "limit": 1
             }
 
