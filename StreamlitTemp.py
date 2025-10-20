@@ -104,6 +104,8 @@ if run_btn:
                 GPFS_data = GPFS_response.json()
                 url = None  # Default value if not found
 
+                processed_items = set()
+
                 # Check if 'data' key exists and if the list is not empty
                 for item in GPFS_data.get('data', []):
                     year = item.get('year')
