@@ -104,17 +104,25 @@ if run_btn:
                 GPFS_data = GPFS_response.json()
                 url = None  # Default value if not found
 
-                # Check if 'data' key exists and if the list is not empty
+                                # Check if 'data' key exists and if the list is not empty
                 if 'data' in GPFS_data and GPFS_data['data']:
-                    # Get the first dictionary from the list
-                    first_item = GPFS_data['data'][0]
+                    # If 
+                    for x in range(5):
+                        for year in range(2020, 2025):
+                            if GPFS_data['data'][x].get("year") == year:
+                                url = GPFS_data['data'][x].get('url') # Corrected to get URL for the current item
+                                st.write(f"check out this for {year} [link]({url})")
+                                st.markdown(f"check out this for {year} [link]({url})")
+
+                    # # Get the first dictionary from the list
+                    # first_item = GPFS_data['data'][0]
                     
-                    # Get the 'url' value from the dictionary, using .get() to avoid errors
-                    # .get('url') will return None if the 'url' key doesn't exist
-                    url = first_item.get('url')
+                    # # Get the 'url' value from the dictionary, using .get() to avoid errors
+                    # # .get('url') will return None if the 'url' key doesn't exist
+                    # url = first_item.get('url')
     
                 # Give the GPFS at the very bottom
-                st.write("Link to the latest general purpose financial statements in our database: ", url)
+                # st.write("Link to the latest general purpose financial statements in our database: ", url)
             except Exception as f:
                 st.error(f"GPFS retrieval error {f}")
 
