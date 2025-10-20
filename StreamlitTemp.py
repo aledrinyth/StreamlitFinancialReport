@@ -106,27 +106,27 @@ if run_btn:
 
                 # Check if 'data' key exists and if the list is not empty
                 for item in GPFS_data.get('data', []):
-                year = item.get('year')
-                url = item.get('url')
-            
-                # --- Robustness Check ---
-                # Skip this iteration if 'year' or 'url' is missing. [11, 13]
-                if not year or not url:
-                    continue
-            
-                # --- Main Logic ---
-                # Check if the year is within the desired range.
-                if 2020 <= year < 2025:
-                    # Create a unique identifier for the current item.
-                    item_identifier = (year, url)
-            
-                    # --- Duplicate Check ---
-                    # If this combination has not been processed yet, display it.
-                    if item_identifier not in processed_items:
-                        st.markdown(f"Check out this for {year} [link]({url})")
-            
-                        # Add the identifier to the set to prevent future duplicates.
-                        processed_items.add(item_identifier)
+                    year = item.get('year')
+                    url = item.get('url')
+                
+                    # --- Robustness Check ---
+                    # Skip this iteration if 'year' or 'url' is missing. [11, 13]
+                    if not year or not url:
+                        continue
+                
+                    # --- Main Logic ---
+                    # Check if the year is within the desired range.
+                    if 2020 <= year < 2025:
+                        # Create a unique identifier for the current item.
+                        item_identifier = (year, url)
+                
+                        # --- Duplicate Check ---
+                        # If this combination has not been processed yet, display it.
+                        if item_identifier not in processed_items:
+                            st.markdown(f"Check out this for {year} [link]({url})")
+                
+                            # Add the identifier to the set to prevent future duplicates.
+                            processed_items.add(item_identifier)
             except Exception as f:
                 st.error(f"GPFS retrieval error {f}")
 
