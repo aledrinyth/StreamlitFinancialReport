@@ -134,7 +134,7 @@ if run_btn:
             except Exception as f:
                 st.error(f"GPFS retrieval error {f}")
 
-        try:
+            try:
                 equity_response = requests.post(equity_url, headers=GPFS_headers, json=GPFS_payload, timeout=10)
     
                 # Raise an exception for bad status codes (4xx or 5xx)
