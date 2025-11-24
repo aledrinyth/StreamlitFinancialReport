@@ -95,6 +95,7 @@ if run_btn:
 
             # --- Now retrieve the GPFS from our database ---
             try:
+                st.markdown("General Purpose Financial Statements(GPFS)")
                 GPFS_response = requests.post(invoke_url, headers=GPFS_headers, json=GPFS_payload, timeout=10)
     
                 # Raise an exception for bad status codes (4xx or 5xx)
@@ -135,6 +136,7 @@ if run_btn:
                 st.error(f"GPFS retrieval error {f}")
 
             try:
+                st.markdown("Equity Reports")
                 equity_response = requests.post(equity_url, headers=GPFS_headers, json=GPFS_payload, timeout=10)
     
                 # Raise an exception for bad status codes (4xx or 5xx)
