@@ -31,6 +31,8 @@ if run_btn:
             SUPABASE_URL = st.secrets["SUPABASE_URL"]
             SUPABASE_ANON_KEY = st.secrets["SUPABASE_ANON_KEY"]
             FUNCTION_NAME = "Retrieve-latest-url-for-GPFS" 
+            EQUITY_REPORTS = "Equity-Reports-Retrieval-ASX200"
+            equity_url = f"{SUPABASE_URL}/functions/v1/{EQUITY_REPORTS}"
             invoke_url = f"{SUPABASE_URL}/functions/v1/{FUNCTION_NAME}"
 
             GPFS_headers = {
@@ -131,6 +133,46 @@ if run_btn:
                             processed_items.add(item_identifier)
             except Exception as f:
                 st.error(f"GPFS retrieval error {f}")
+
+        try:
+                equity_response = requests.post(equity_url, headers=GPFS_headers, json=GPFS_payload, timeout=10)
+    
+                # Raise an exception for bad status codes (4xx or 5xx)
+                equity_response.raise_for_status()
+            
+                # --- Process the Response ---
+                
+                # The response from the function is in JSON format
+                equity_data = equity_response.json()
+                url = None  # Default value if not found
+
+                processed_items = set()
+
+                # Check if 'data' key exists and if the list is not empty
+                for item in equity_data.get('data', []):
+                    year = item.get('year')
+                    url = item.get('url')
+                
+                    # --- Robustness Check ---
+                    # Skip this iteration if 'year' or 'url' is missing. [11, 13]
+                    if not year or not url:
+                        continue
+                
+                    # --- Main Logic ---
+                    # Check if the year is within the desired range.
+                    if 2020 <= year < 2025:
+                        # Create a unique identifier for the current item.
+                        item_identifier = (year, url)
+                
+                        # --- Duplicate Check ---
+                        # If this combination has not been processed yet, display it.
+                        if item_identifier not in processed_items:
+                            st.markdown(f"Check out this for {year} [link]({url})")
+                
+                            # Add the identifier to the set to prevent future duplicates.
+                            processed_items.add(item_identifier)
+            except Exception as f:
+                st.error(f"Equity Report retrieval error {f}")
 
 
         except Exception as e:
