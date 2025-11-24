@@ -96,6 +96,12 @@ if run_btn:
             # --- Now retrieve the GPFS from our database ---
             try:
                 st.markdown("General Purpose Financial Statements(GPFS)")
+
+                GPFS_payload = {
+                    "ticker": yf_ticker,split('.')[0],
+                    "limit": 1
+                }
+                
                 GPFS_response = requests.post(invoke_url, headers=GPFS_headers, json=GPFS_payload, timeout=10)
     
                 # Raise an exception for bad status codes (4xx or 5xx)
@@ -137,7 +143,13 @@ if run_btn:
 
             try:
                 st.markdown("Equity Reports")
-                equity_response = requests.post(equity_url, headers=GPFS_headers, json=GPFS_payload, timeout=10)
+
+                Equity_payload = {
+                    "ticker": yf_ticker,split('.')[0],
+                    "limit": 1
+                }
+                
+                equity_response = requests.post(equity_url, headers=GPFS_headers, json=Equity_payload, timeout=10)
     
                 # Raise an exception for bad status codes (4xx or 5xx)
                 equity_response.raise_for_status()
