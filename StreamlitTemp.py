@@ -169,7 +169,7 @@ if run_btn:
                 for item in equity_data.get('data', []):
                     url = item.get('url')
                     st.markdown(f"{counter}) Check this out [link]({url})")
-                    counter++
+                    counter+=1
                 
             except Exception as f:
                 st.error(f"Equity Report retrieval error {f}")
