@@ -98,7 +98,7 @@ if run_btn:
                 st.markdown("General Purpose Financial Statements(GPFS)")
 
                 GPFS_payload = {
-                    "ticker": yf_ticker,split('.')[0],
+                    "ticker": yf_ticker.split('.')[0],
                     "limit": 1
                 }
                 
@@ -145,7 +145,7 @@ if run_btn:
                 st.markdown("Equity Reports")
 
                 Equity_payload = {
-                    "ticker": yf_ticker,split('.')[0],
+                    "ticker": yf_ticker.split('.')[0],
                     "limit": 1
                 }
                 
