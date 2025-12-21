@@ -1,0 +1,7 @@
+streamlit
+pdfplumber
+google-generativeai
+pandas
+supabase
+numpy
+requests
