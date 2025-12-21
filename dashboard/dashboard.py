@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 from supabase import create_client, Client
 import json
-from dashboard.model import analyze_report
-from dashboard.utils import find_similar_companies, get_industry_companies_with_metrics
+from model import analyze_report
+from utils import find_similar_companies, get_industry_companies_with_metrics
 import requests
 
 # Set the layout for the page
