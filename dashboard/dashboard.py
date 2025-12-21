@@ -166,9 +166,9 @@ if page == "Financial Dashboard":
 
             except Exception as e:
                 st.error(f"Error loading {section}: {e}")
-elif (page == "Financial Dashboard"):
+elif (page == "Financial Report Analyser"):
 
-    st.title("Financial Report Analyzer")
+    st.title("Financial Report Analyser")
 
     uploaded_pdf = st.file_uploader("Upload annual report (PDF)", type="pdf")
     manual_ticker = st.text_input("Enter Ticker (e.g., MSFT)")
