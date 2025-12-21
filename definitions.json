@@ -1,0 +1,124 @@
+{
+  "metrics": [
+    {
+      "id": "revenue",
+      "name": "Total Revenue",
+      "aliases": ["Revenue", "Sales", "Total Sales"],
+      "definition": "**Total Revenue**: The total amount of income generated from the sale of goods or services before any expenses are deducted. Key indicator of company size and market demand."
+    },
+    {
+      "id": "net_income",
+      "name": "Net Income",
+      "aliases": ["Profit", "Net Profit", "Earnings"],
+      "definition": "**Net Income**: The company's total earnings after all expenses, taxes, and costs have been deducted from revenue. Also known as the 'bottom line'."
+    },
+    {
+      "id": "total_assets",
+      "name": "Total Assets",
+      "aliases": ["Assets"],
+      "definition": "**Total Assets**: The sum of all resources owned by the company that have economic value, including current and non-current assets."
+    },
+    {
+      "id": "total_liabilities",
+      "name": "Total Liabilities",
+      "aliases": ["Liabilities"],
+      "definition": "**Total Liabilities**: The sum of all financial obligations and debts owed by the company to external parties."
+    },
+    {
+      "id": "total_equity",
+      "name": "Total Equity",
+      "aliases": ["Shareholders Equity", "Stockholders Equity", "Equity"],
+      "definition": "**Total Equity**: The residual interest in assets after deducting liabilities. Represents the shareholders' ownership stake in the company."
+    },
+    {
+      "id": "operating_cash_flow",
+      "name": "Operating Cash Flow",
+      "aliases": ["Cash From Operations", "OCF"],
+      "definition": "**Operating Cash Flow**: Cash generated from normal business operations. Indicates the company's ability to generate sufficient cash to maintain and grow operations."
+    },
+    {
+      "id": "free_cash_flow",
+      "name": "Free Cash Flow",
+      "aliases": ["FCF"],
+      "definition": "**Free Cash Flow**: Cash remaining after capital expenditures. Represents cash available for dividends, debt repayment, or growth investments."
+    },
+    {
+      "id": "current_ratio",
+      "name": "Current Ratio",
+      "aliases": [],
+      "definition": "**Current Ratio**: Current Assets divided by Current Liabilities. Measures the company's ability to pay short-term obligations. A ratio above 1.0 indicates good liquidity."
+    },
+    {
+      "id": "debt_to_equity",
+      "name": "Debt to Equity Ratio",
+      "aliases": ["D/E Ratio", "Leverage Ratio"],
+      "definition": "**Debt to Equity Ratio**: Total debt divided by total equity. Indicates financial leverage and risk. Higher ratios suggest more debt financing relative to equity."
+    },
+    {
+      "id": "roe",
+      "name": "Return on Equity",
+      "aliases": ["ROE"],
+      "definition": "**Return on Equity (ROE)**: Net income divided by shareholders' equity. Measures profitability relative to shareholder investment. Higher values indicate better returns."
+    },
+    {
+      "id": "roa",
+      "name": "Return on Assets",
+      "aliases": ["ROA"],
+      "definition": "**Return on Assets (ROA)**: Net income divided by total assets. Measures how efficiently the company uses its assets to generate profit."
+    },
+    {
+      "id": "profit_margin",
+      "name": "Profit Margin",
+      "aliases": ["Net Margin", "Net Profit Margin"],
+      "definition": "**Profit Margin**: Net income divided by revenue, expressed as a percentage. Shows how much profit the company generates from each dollar of revenue."
+    },
+    {
+      "id": "gross_profit",
+      "name": "Gross Profit",
+      "aliases": [],
+      "definition": "**Gross Profit**: Revenue minus cost of goods sold. Indicates profitability before operating expenses, interest, and taxes."
+    },
+    {
+      "id": "ebitda",
+      "name": "EBITDA",
+      "aliases": ["Earnings Before Interest Taxes Depreciation Amortization"],
+      "definition": "**EBITDA**: Earnings before interest, taxes, depreciation, and amortization. Measures operational profitability independent of capital structure and accounting decisions."
+    },
+    {
+      "id": "eps",
+      "name": "Earnings Per Share",
+      "aliases": ["EPS"],
+      "definition": "**Earnings Per Share (EPS)**: Net income divided by number of outstanding shares. Indicates profitability on a per-share basis."
+    },
+    {
+      "id": "pe_ratio",
+      "name": "Price to Earnings Ratio",
+      "aliases": ["P/E Ratio", "PE"],
+      "definition": "**Price to Earnings Ratio (P/E)**: Stock price divided by earnings per share. Used to value a company relative to its earnings. Higher ratios may indicate growth expectations or overvaluation."
+    },
+    {
+      "id": "working_capital",
+      "name": "Working Capital",
+      "aliases": [],
+      "definition": "**Working Capital**: Current assets minus current liabilities. Measures short-term financial health and operational efficiency."
+    },
+    {
+      "id": "capex",
+      "name": "Capital Expenditures",
+      "aliases": ["CapEx"],
+      "definition": "**Capital Expenditures (CapEx)**: Funds used to acquire, upgrade, or maintain physical assets. Indicates investment in long-term growth."
+    },
+    {
+      "id": "dividend_yield",
+      "name": "Dividend Yield",
+      "aliases": [],
+      "definition": "**Dividend Yield**: Annual dividends per share divided by stock price, expressed as a percentage. Indicates the return on investment from dividends alone."
+    },
+    {
+      "id": "book_value",
+      "name": "Book Value Per Share",
+      "aliases": ["BVPS"],
+      "definition": "**Book Value Per Share**: Total equity divided by number of outstanding shares. Represents the per-share value of the company's assets minus liabilities."
+    }
+  ]
+}
