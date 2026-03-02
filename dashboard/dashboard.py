@@ -5,8 +5,8 @@ import json
 from model import analyze_report
 from utils import find_similar_companies, get_industry_companies_with_metrics
 import requests
-from ../using.sentence_model import process_single_document, results_to_dataframe
-from ../using.text_extracter import get_reports, get_article_text, get_GPFS_reports, extract_text_from_GPFS, clean_GPFS_text
+from using.sentence_model import process_single_document, results_to_dataframe
+from using.text_extracter import get_reports, get_article_text, get_GPFS_reports, extract_text_from_GPFS, clean_GPFS_text
 
 # Set the layout for the page
 st.set_page_config(layout="wide") 
