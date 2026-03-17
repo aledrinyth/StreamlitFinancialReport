@@ -8,10 +8,19 @@ import streamlit as st
 model = None
 
 def get_model():
-    """Initialize the model with API key from secrets"""
+    """Initialize the model with API key from secrets or environment variables"""
     global model
     if model is None:
-        genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
+        # Try to get API key from Streamlit secrets first, then from environment variables
+        try:
+            api_key = st.secrets["GOOGLE_API_KEY"]
+        except (KeyError, FileNotFoundError):
+            api_key = os.environ.get("GOOGLE_API_KEY")
+        
+        if not api_key:
+            raise ValueError("GOOGLE_API_KEY not found in secrets or environment variables")
+        
+        genai.configure(api_key=api_key)
         model = genai.GenerativeModel("gemini-2.0-flash")
     return model
 

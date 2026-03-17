@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  dashboard:
+    build: .
+    ports:
+      - "8501:8501"
+    environment:
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_KEY=${SUPABASE_KEY}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - CACHE_DIR=/app/cache_finbert
+      - RESULTS_DIR=/app/results
+    env_file:
+      - .env
+    volumes:
+      - ./cache_finbert:/app/cache_finbert
+      - ./results:/app/results
+    restart: unless-stopped
+
+

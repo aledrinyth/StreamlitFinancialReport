@@ -5,17 +5,28 @@ import json
 from model import analyze_report
 from utils import find_similar_companies, get_industry_companies_with_metrics
 import requests
+import os
+import time
 from using.sentence_model import process_single_document, results_to_dataframe
 from using.text_extracter import get_reports, get_article_text, get_GPFS_reports, extract_text_from_GPFS, clean_GPFS_text
 
 # Set the layout for the page
-st.set_page_config(layout="wide") 
+st.set_page_config(page_title='Equity Reports Sentiment Analyser Dashboard', layout="wide") 
 
 # Initialize Supabase client
 @st.cache_resource
 def init_supabase() -> Client:
-    url = st.secrets["SUPABASE_URL"]
-    key = st.secrets["SUPABASE_KEY"]
+    # Try environment variables first, then st.secrets for local dev
+    try:
+        url = os.environ.get("SUPABASE_URL") or st.secrets["SUPABASE_URL"]
+        key = os.environ.get("SUPABASE_KEY") or st.secrets["SUPABASE_KEY"]
+    except (KeyError, FileNotFoundError):
+        url = os.environ.get("SUPABASE_URL")
+        key = os.environ.get("SUPABASE_KEY")
+    
+    if not url or not key:
+        raise ValueError("SUPABASE_URL and SUPABASE_KEY not found in environment variables or secrets")
+    
     return create_client(url, key)
 
 supabase = init_supabase()
@@ -39,7 +50,9 @@ def format_number(val):
         return val
 
 # Read definitions from definitions.json
-with open("dashboard/definitions.json", "r", encoding="utf-8") as f:
+import os
+definitions_path = os.path.join(os.path.dirname(__file__), "definitions.json")
+with open(definitions_path, "r", encoding="utf-8") as f:
     definitions_data = json.load(f)
     definitions = {}
     for metric in definitions_data["metrics"]:
@@ -168,7 +181,7 @@ if page == "Financial Dashboard":
 
             except Exception as e:
                 st.error(f"Error loading {section}: {e}")
-elif (page == "Financial Dashboard"):
+elif (page == "Report Analyst"):
 
     st.title("Financial Report Analyzer")
 
@@ -188,10 +201,15 @@ elif (page == "Financial Dashboard"):
                 # Simulating success or failure
 
                 # Initialise all the parameters needed for the GPFS requests and the financial statement request
-                url = st.secrets["url"]
-
-                SUPABASE_URL = st.secrets["SUPABASE_URL"]
-                SUPABASE_ANON_KEY = st.secrets["SUPABASE_ANON_KEY"]
+                url = os.environ.get("FINANCIAL_API_URL") or st.secrets.get("url", "")
+                
+                SUPABASE_URL = os.environ.get("SUPABASE_URL") or st.secrets.get("SUPABASE_URL", "")
+                SUPABASE_ANON_KEY = os.environ.get("SUPABASE_KEY") or os.environ.get("SUPABASE_ANON_KEY") or st.secrets.get("SUPABASE_ANON_KEY") or st.secrets.get("SUPABASE_KEY", "")
+                
+                if not SUPABASE_URL or not SUPABASE_ANON_KEY:
+                    st.error("Missing SUPABASE_URL or SUPABASE_KEY in environment variables or secrets")
+                    st.stop()
+                
                 FUNCTION_NAME = "Retrieve-latest-url-for-GPFS" 
                 EQUITY_REPORTS = "Equity-Reports-Retrieval-ASX200"
                 equity_url = f"{SUPABASE_URL}/functions/v1/{EQUITY_REPORTS}"
@@ -352,7 +370,7 @@ elif (page == "Financial Dashboard"):
         st.write("Report content would be displayed here.")
         st.balloons()
 
-elif (page == "Equity Report Analyser"):
+elif (page == "Financial Report Analyser"):
     
     
     
@@ -384,7 +402,7 @@ elif (page == "Equity Report Analyser"):
     
     
     
-    st.set_page_config(page_title='Equity Reports Sentiment Analyser Dashboard', layout ='wide')
+    # st.set_page_config(page_title='Equity Reports Sentiment Analyser Dashboard', layout ='wide')
     st.title("Equity Reports Sentiment Analyser Dashboard")
     
     st.markdown("This dashboard allows you to analyse sentiment of equity reports using FinBERT model.")
