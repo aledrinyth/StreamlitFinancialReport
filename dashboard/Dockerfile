@@ -19,9 +19,18 @@ COPY using/requirements.txt requirements.txt
 RUN pip install --no-cache-dir setuptools>=68.0.0 && \
     pip install --no-cache-dir -r requirements.txt
 
-# Download necessary NLP models
+# Set Hugging Face cache directory
+ENV HF_HOME=/app/huggingface
+RUN mkdir -p $HF_HOME
+
+# Download necessary NLP models and FinBERT
 RUN python -m spacy download en_core_web_sm && \
-    python -m nltk.downloader punkt averaged_perceptron_tagger 2>/dev/null || true
+    python -m nltk.downloader punkt averaged_perceptron_tagger 2>/dev/null || true && \
+    python -c "from transformers import AutoTokenizer, AutoModelForSequenceClassification; \
+    print('Downloading FinBERT model...'); \
+    AutoTokenizer.from_pretrained('yiyanghkust/finbert-tone'); \
+    AutoModelForSequenceClassification.from_pretrained('yiyanghkust/finbert-tone'); \
+    print('FinBERT model cached successfully')"
 
 # Copy application files
 COPY . .
@@ -56,8 +65,8 @@ EOF
 # Expose Streamlit port
 EXPOSE 8501
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+# Health check (extended start period for model initialization)
+HEALTHCHECK --interval=30s --timeout=15s --start-period=90s --retries=3 \
     CMD curl --fail http://localhost:8501/_stcore/health || exit 1
 
 # Run Streamlit

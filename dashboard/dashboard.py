@@ -18,8 +18,8 @@ st.set_page_config(page_title='Equity Reports Sentiment Analyser Dashboard', lay
 def init_supabase() -> Client:
     # Try environment variables first, then st.secrets for local dev
     try:
-        url = os.environ.get("SUPABASE_URL") or st.secrets["SUPABASE_URL"]
-        key = os.environ.get("SUPABASE_KEY") or st.secrets["SUPABASE_KEY"]
+        url = os.environ.get("SUPABASE_URL")
+        key = os.environ.get("SUPABASE_KEY")
     except (KeyError, FileNotFoundError):
         url = os.environ.get("SUPABASE_URL")
         key = os.environ.get("SUPABASE_KEY")
@@ -201,10 +201,10 @@ elif (page == "Report Analyst"):
                 # Simulating success or failure
 
                 # Initialise all the parameters needed for the GPFS requests and the financial statement request
-                url = os.environ.get("FINANCIAL_API_URL") or st.secrets.get("url", "")
+                url = os.environ.get("FINANCIAL_API_URL")
                 
-                SUPABASE_URL = os.environ.get("SUPABASE_URL") or st.secrets.get("SUPABASE_URL", "")
-                SUPABASE_ANON_KEY = os.environ.get("SUPABASE_KEY") or os.environ.get("SUPABASE_ANON_KEY") or st.secrets.get("SUPABASE_ANON_KEY") or st.secrets.get("SUPABASE_KEY", "")
+                SUPABASE_URL = os.environ.get("SUPABASE_URL")
+                SUPABASE_ANON_KEY = os.environ.get("SUPABASE_KEY") or os.environ.get("SUPABASE_ANON_KEY")
                 
                 if not SUPABASE_URL or not SUPABASE_ANON_KEY:
                     st.error("Missing SUPABASE_URL or SUPABASE_KEY in environment variables or secrets")
